@@ -1,6 +1,6 @@
 name: secure_app_switcher
 description: Apply a safe masking effect to the app screen on the app switcher or task list.
-version: 0.1.0
+version: 0.1.0+1
 repository: https://github.com/arkwycr/secure_app_switcher
 issue_tracker: https://github.com/arkwycr/secure_app_switcher/issues
 
