@@ -80,7 +80,7 @@ SecureAppSwitcher.on(iosStyle: SecureMaskStyle.blurLight);
 
 `FLAG_SECURE` of WindowManager LayoutParams is used.
 
-> [WindowManager.LayoutParams | Android Developers](http://developer.android.com/reference/android/view/WindowManager.LayoutParams.html#FLAG_SECURE)
+> [WindowManager.LayoutParams | Android Developers](https://developer.android.com/reference/android/view/WindowManager.LayoutParams.html#FLAG_SECURE)
 
 | switching apps | screenshot disabled |
 | :---: | :---: |
