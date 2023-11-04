@@ -8,6 +8,8 @@ class SecureAppSwitcherLayer extends StatefulWidget {
   ///
   /// When set to `true`, Android's `FLAG_SECURE` flag is cleared when the app is in the [AppLifecycleState.resumed] state, allowing for screenshots. The flag is set back to prevent screenshots at other times.
   final bool allowAndroidScreenshot;
+
+  /// {@macro SecureMaskStyle}
   final SecureMaskStyle style;
   final Widget child;
 
