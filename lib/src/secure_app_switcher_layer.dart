@@ -4,10 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:secure_app_switcher/secure_app_switcher.dart';
 
 class SecureAppSwitcherLayer extends StatefulWidget {
+  /// A flag that controls Android screenshot behavior.
+  ///
+  /// When set to `true`, Android's `FLAG_SECURE` flag is cleared when the app is in the [AppLifecycleState.resumed] state, allowing for screenshots. The flag is set back to prevent screenshots at other times.
   final bool allowAndroidScreenshot;
   final SecureMaskStyle style;
   final Widget child;
 
+  /// Hides the app screen when user enters the app switcher.
+  ///
+  /// This widget is designed to be used as the root widget when you want to hide all screens of the app. It provides an option to allow screenshots on Android.
+  ///
+  /// In case you want to hide specific screens, use [SecureAppSwitcherPage] instead.
+  ///
+  /// [allowAndroidScreenshot] determines whether Android screenshots are allowed.
+  /// [style] sets the mask style for iOS. It defaults to [SecureMaskStyle.light].
   const SecureAppSwitcherLayer({
     super.key,
     this.allowAndroidScreenshot = false,
