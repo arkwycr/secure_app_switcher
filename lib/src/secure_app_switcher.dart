@@ -1,8 +1,10 @@
 import 'package:flutter/services.dart';
 
+/// {@template SecureMaskStyle}
 /// Select a screen mask style.
 ///
 /// Applies to iOS only
+/// {@endtemplate}
 enum SecureMaskStyle {
   /// UIColor.white is applied.
   light,

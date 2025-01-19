@@ -29,6 +29,8 @@ class SecureAppSwitcherPage extends StatefulWidget {
   });
 
   final Widget child;
+
+  /// {@macro SecureMaskStyle}
   final SecureMaskStyle style;
 
   @override

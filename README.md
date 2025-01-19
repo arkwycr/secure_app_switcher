@@ -20,6 +20,41 @@ SecureAppSwitcher.on();
 SecureAppSwitcher.off();
 ```
 
+### Use functions for all screens
+
+Wrap the `MaterialApp` widget with a `SecureAppSwitcherLayer`.
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return SecureAppSwitcherLayer(
+      allowAndroidScreenshot: true,
+      child: MaterialApp(
+        title: 'Secure App Switcher',
+        initialRoute: '/',
+      ),
+    );
+  }
+```
+
+Or use it with a `builder`:
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Secure App Switcher',
+      initialRoute: '/',
+      builder: (context, child) {
+        return SecureAppSwitcherLayer(
+          child: child ?? const CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+```
+
+
 ### Use functions on specific screens
 
 It is necessary to set `secureAppSwitcherRouteObserver` to switch the function at the time of screen transition.
