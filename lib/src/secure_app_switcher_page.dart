@@ -23,10 +23,10 @@ final RouteObserver secureAppSwitcherRouteObserver = RouteObserver();
 /// ```
 class SecureAppSwitcherPage extends StatefulWidget {
   const SecureAppSwitcherPage({
-    Key? key,
+    super.key,
     required this.child,
     this.style = SecureMaskStyle.light,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final SecureMaskStyle style;

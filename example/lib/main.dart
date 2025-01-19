@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:secure_app_switcher/secure_app_switcher.dart';
 
 void main() {
@@ -26,25 +25,26 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) {
         return const HomeScreen();
       });
-    case "/a":
+    case "/screen_a":
+      return MaterialPageRoute(builder: (context) {
+        return const ScreenA();
+      });
+    case "/screen_b":
       return MaterialPageRoute(builder: (context) {
         return const SecureAppSwitcherPage(
           style: SecureMaskStyle.blurLight,
-          child: ScreenA(),
+          child: ScreenB(),
         );
       });
-    case "/b":
-      return MaterialPageRoute(builder: (context) {
-        return const ScreenB();
-      });
-    case "/c":
+
+    case "/screen_c":
       return MaterialPageRoute(builder: (context) {
         return const SecureAppSwitcherPage(
           style: SecureMaskStyle.blurDark,
           child: ScreenC(),
         );
       });
-    case "/d":
+    case "/screen_d":
       return MaterialPageRoute(builder: (context) {
         return const SecureAppSwitcherPage(
           style: SecureMaskStyle.dark,
@@ -60,8 +60,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
 /// -------------------------------------------------------------------------------
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _secureEnable = false;
 
   @override
   Widget build(BuildContext context) {
@@ -69,31 +76,64 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Plugin example app'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text('Switching', style: Theme.of(context).textTheme.headlineSmall),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () => SecureAppSwitcher.on(),
-                child: const Text('ON'),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          spacing: 10,
+          children: [
+            Text('Arbitrary Processing',
+                style: Theme.of(context).textTheme.titleLarge),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('SecureAppSwitcher'),
+                  Switch(
+                    value: _secureEnable,
+                    onChanged: (value) {
+                      setState(() {
+                        _secureEnable = value;
+                        if (value) {
+                          SecureAppSwitcher.on();
+                        } else {
+                          SecureAppSwitcher.off();
+                        }
+                      });
+                    },
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () => SecureAppSwitcher.off(),
-                child: const Text('OFF'),
-              ),
-            ],
-          ),
-          const Divider(),
-          Text('Set per screen',
-              style: Theme.of(context).textTheme.headlineSmall),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pushNamed("/a"),
-            child: const Text('Screen A'),
-          )
-        ],
+            ),
+            const Divider(),
+            Text('Specific Screens',
+                style: Theme.of(context).textTheme.titleLarge),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 20,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _secureEnable = false;
+                      SecureAppSwitcher.off();
+                    });
+                    Navigator.of(context).pushNamed("/screen_a");
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        'Screen A',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const Text('SecureAppSwitcher : off'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -108,21 +148,30 @@ class ScreenA extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Screen A'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: const [
-              Text('SecureAppSwitcher : on'),
-              Text('SecureMaskStyle : blurLight (only iOS)'),
-            ],
-          ),
-          const Divider(),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pushNamed("/b"),
-            child: const Text('Screen B'),
-          )
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('SecureAppSwitcher : off',
+                style: Theme.of(context).textTheme.bodyLarge),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("/screen_b");
+              },
+              child: Column(
+                children: [
+                  Text(
+                    'Screen B',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Text('SecureAppSwitcher : on'),
+                  const Text('SecureMaskStyle : blurLight (only iOS)'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -137,20 +186,36 @@ class ScreenB extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Screen B'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: const [
-              Text('SecureAppSwitcher : off'),
-            ],
-          ),
-          const Divider(),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pushNamed("/c"),
-            child: const Text('Screen C'),
-          )
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                Text('SecureAppSwitcher : on',
+                    style: Theme.of(context).textTheme.bodyLarge),
+                Text('SecureMaskStyle : blurLight (only iOS)',
+                    style: Theme.of(context).textTheme.bodyLarge),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed("/screen_c");
+              },
+              child: Column(
+                children: [
+                  Text(
+                    'Screen C',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Text('SecureAppSwitcher : on'),
+                  const Text('SecureMaskStyle : blurDark (only iOS)'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -165,29 +230,42 @@ class ScreenC extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Screen C'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            children: const [
-              Text('SecureAppSwitcher : on'),
-              Text('SecureMaskStyle : blurDark (only iOS)'),
-            ],
-          ),
-          const Divider(),
-          ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) => Navigator(
-                  onGenerateRoute: (context) =>
-                      generateRoute(const RouteSettings(name: '/d')),
-                ),
-              );
-            },
-            child: const Text('Screen D'),
-          )
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              children: [
+                Text('SecureAppSwitcher : on',
+                    style: Theme.of(context).textTheme.bodyLarge),
+                Text('SecureMaskStyle : blurDark (only iOS)',
+                    style: Theme.of(context).textTheme.bodyLarge),
+              ],
+            ),
+            ElevatedButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (context) => Navigator(
+                    onGenerateRoute: (context) =>
+                        generateRoute(const RouteSettings(name: '/screen_d')),
+                  ),
+                );
+              },
+              child: Column(
+                children: [
+                  Text(
+                    'Modal Screen D',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const Text('SecureAppSwitcher : on'),
+                  const Text('SecureMaskStyle : dark (only iOS)'),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -209,9 +287,12 @@ class ScreenD extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('SecureAppSwitcher : on'),
-            Text('SecureMaskStyle : dark (only iOS)'),
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('SecureAppSwitcher : on',
+                style: Theme.of(context).textTheme.bodyLarge),
+            Text('SecureMaskStyle : dark (only iOS)',
+                style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
       ),
